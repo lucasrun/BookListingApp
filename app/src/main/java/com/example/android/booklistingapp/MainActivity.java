@@ -23,17 +23,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String LOG_TAG = MainActivity.class.getName();
 
-   // url for book query
-    private static final String BOOK_REQUEST_URL =
-            "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=10";
-
     // loader id
     private static final int DATA_LOADER_ID = 1;
 
     // query keyword
-    private String mSearchString = "";
+    private String mKeyword = "";
 
-   // list adapter
+    // list adapter
     private DataAdapter mAdapter;
 
     // different views
@@ -57,16 +53,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter = new DataAdapter(this, new ArrayList<Data>());
         mListView.setAdapter(mAdapter);
 
-        mSearchString = mEditText.getText().toString();
-
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*
-                /   DONT KNOW HOW TO BUILD HERE...
-                */
-
+                // 1st cleans loader upon button press and then fills the list
+                getLoaderManager().restartLoader(0, null, MainActivity.this);
             }
         });
 
@@ -95,15 +86,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
+    // saving data @ rotation
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mKeyword = mEditText.getText().toString();
+        outState.putString("KEYWORD", mKeyword);
+        outState.putParcelableArrayList("key", new ArrayList<Data>());
+        super.onSaveInstanceState(outState);
+    }
+
+    // loading data @ rotation
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        mKeyword = savedInstanceState.getString("KEYWORD");
+        super.onRestoreInstanceState(savedInstanceState);
+        getLoaderManager().restartLoader(0, null, MainActivity.this);
+    }
+
+    /*
+    /       LOADER INSTANCES
+     */
     @Override
     public Loader<List<Data>> onCreateLoader(int i, Bundle bundle) {
-
-        Uri baseUri = Uri.parse(BOOK_REQUEST_URL);
-        Uri.Builder uriBuilder = baseUri.buildUpon();
-
-        uriBuilder.appendQueryParameter("q", mSearchString);
-
-        return new DataLoader(this, uriBuilder.toString());
+        mKeyword = mEditText.getText().toString();
+        DataLoader loader = new DataLoader(this, mKeyword);
+        return loader;
     }
 
     @Override
@@ -119,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    // clearing current data
     @Override
     public void onLoaderReset(Loader<List<Data>> loader) {
         mAdapter.clear();

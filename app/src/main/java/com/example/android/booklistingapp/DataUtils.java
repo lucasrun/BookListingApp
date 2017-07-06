@@ -30,8 +30,8 @@ public final class DataUtils {
     private DataUtils() {
     }
 
-    public static List<Data> fetchData(String requestUrl) {
-        URL url = createUrl(requestUrl);
+    public static List<Data> fetchData(String mKeyword) {
+        URL url = createUrl(mKeyword);
         String jsonResponse = null;
         try {
             jsonResponse = makeHttpRequest(url);
@@ -43,10 +43,10 @@ public final class DataUtils {
         return data;
     }
 
-    private static URL createUrl(String stringUrl) {
+    private static URL createUrl(String mKeyword) {
         URL url = null;
         try {
-            url = new URL(stringUrl);
+            url = new URL("https://www.googleapis.com/books/v1/volumes?q=" + mKeyword + "&maxResults=10");
         } catch (MalformedURLException e) {
             Log.e(LOG_TAG, "Problem building the URL ", e);
         }

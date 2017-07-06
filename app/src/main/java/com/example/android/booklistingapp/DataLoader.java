@@ -15,11 +15,11 @@ public class DataLoader extends AsyncTaskLoader<List<Data>> {
     private static final String LOG_TAG = DataLoader.class.getName();
 
     // url query
-    private String mUrl;
+    private String mKeyword;
 
-    public DataLoader(Context context, String url) {
+    public DataLoader(Context context, String mKeyword) {
         super(context);
-        mUrl = url;
+        this.mKeyword = mKeyword;
     }
 
     @Override
@@ -29,12 +29,12 @@ public class DataLoader extends AsyncTaskLoader<List<Data>> {
 
     @Override
     public List<Data> loadInBackground() {
-        if (mUrl == null) {
+        if (mKeyword == null) {
             return null;
         }
 
         // network request, response, list extract
-        List<Data> data = DataUtils.fetchData(mUrl);
+        List<Data> data = DataUtils.fetchData(mKeyword);
         return data;
     }
 }
