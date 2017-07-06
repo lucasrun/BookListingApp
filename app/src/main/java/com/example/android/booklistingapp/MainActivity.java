@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Button mButton;
     private ListView mListView;
 
+    // for list position save state
+    private int index, top;
+    private View v;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,9 +94,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     // saving data @ rotation
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        mKeyword = mEditText.getText().toString();
+        // counting list position
+        index = mListView.getFirstVisiblePosition();
+        v = mListView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
+
+        // saving
         outState.putString("KEYWORD", mKeyword);
-        outState.putParcelableArrayList("key", new ArrayList<Data>());
+        outState.putInt("INDEX", index);
+        outState.putInt("TOP", top);
         super.onSaveInstanceState(outState);
     }
 
@@ -99,13 +110,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         mKeyword = savedInstanceState.getString("KEYWORD");
+        index = savedInstanceState.getInt("INDEX");
+        top = savedInstanceState.getInt("TOP");
         super.onRestoreInstanceState(savedInstanceState);
         getLoaderManager().restartLoader(0, null, MainActivity.this);
+        mListView.setSelectionFromTop(index, top);
     }
 
     /*
     /       LOADER INSTANCES
-     */
+    */
     @Override
     public Loader<List<Data>> onCreateLoader(int i, Bundle bundle) {
         mKeyword = mEditText.getText().toString();
