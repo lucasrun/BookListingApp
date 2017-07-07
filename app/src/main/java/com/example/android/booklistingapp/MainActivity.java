@@ -68,10 +68,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Data currentData = mAdapter.getItem(position);
-                Uri dataUri = Uri.parse(currentData.getmUrl());
-                Intent websiteIntent = new Intent(Intent.ACTION_VIEW, dataUri);
-                startActivity(websiteIntent);
+                connectManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                networkInfo = connectManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    Data currentData = mAdapter.getItem(position);
+                    Uri dataUri = Uri.parse(currentData.getmUrl());
+                    Intent websiteIntent = new Intent(Intent.ACTION_VIEW, dataUri);
+                    startActivity(websiteIntent);
+                }
             }
         });
 
