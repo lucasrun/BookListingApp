@@ -29,26 +29,18 @@
 
         <EditText
             android:id="@+id/editTV"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="0"
+            style="@style/generalView"
             android:gravity="center"
-            android:hint="Enter search query" />
+            android:hint="@string/enter_search_query" />
 
         <Button
             android:id="@+id/buttonTV"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0"
-            android:text="SEARCH" />
+            style="@style/generalView"
+            android:text="@string/search_button" />
 
         <ListView
             android:id="@+id/listTV"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_weight="1" />
+            style="@style/listView" />
     </LinearLayout>
 
 </RelativeLayout>

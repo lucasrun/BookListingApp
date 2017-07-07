@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 1st cleans loader upon button press and then fills the list
-                getLoaderManager().restartLoader(0, null, MainActivity.this);
+                getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
             }
         });
 
@@ -86,77 +85,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    /***************************** TESTING ENVIROMENT *********************************/
-
-//    Parcelable state;
-//
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        state = mListView.onSaveInstanceState();
-//        if (state != null) {
-//            //set adapter to listview
-//            mListView.setAdapter(mAdapter);
-//        }
-//        //Restore previous state
-//        mListView.onRestoreInstanceState(state);
-//    }
-//
-//    // for list position save state
-//    private int index, top;
-//    private View v;
-//
-//    @Override
-//    public void onPause() {
-//        state = mListView.onSaveInstanceState();
-//        super.onPause();
-//    }
-//
-//    @Override
-//    public void onViewCreated(final View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        mListView.setAdapter(mAdapter);
-//
-//        if(state != null) {
-//            mListView.onRestoreInstanceState(state);
-//        }
-//    }
-//
-//    // saving data @ rotation
-//    @Override
-//    protected void onSaveInstanceState(Bundle outState) {
-//        // counting list position
-//        index = mListView.getFirstVisiblePosition();
-//        v = mListView.getChildAt(0);
-//        top = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
-//
-//        // saving
-//        outState.putString("KEYWORD", mKeyword);
-//        outState.putInt("INDEX", index);
-//        outState.putInt("TOP", top);
-//        super.onSaveInstanceState(outState);
-//    }
-//
-//    // loading data @ rotation
-//    @Override
-//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-//        mKeyword = savedInstanceState.getString("KEYWORD");
-//        index = savedInstanceState.getInt("INDEX");
-//        top = savedInstanceState.getInt("TOP");
-//        super.onRestoreInstanceState(savedInstanceState);
-//        getLoaderManager().restartLoader(0, null, MainActivity.this);
-//        mListView.setSelectionFromTop(index, top);
-//    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        getLoaderManager().restartLoader(0, null, MainActivity.this);
-    }
-
-    /***************************** TESTING ENVIROMENT *********************************/
-
-    // loaders
+    // loader instances
     @Override
     public Loader<List<Data>> onCreateLoader(int i, Bundle bundle) {
         mKeyword = mEditText.getText().toString();
@@ -182,6 +111,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<List<Data>> loader) {
         mAdapter.clear();
-        getLoaderManager().restartLoader(0, null, MainActivity.this);
+        getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
     }
 }
