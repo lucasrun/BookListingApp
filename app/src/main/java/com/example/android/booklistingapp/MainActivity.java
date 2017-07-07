@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(Loader<List<Data>> loader) {
-        mAdapter.clear();getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
+        mAdapter.clear();
+        getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
     }
 }

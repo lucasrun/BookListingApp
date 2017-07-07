@@ -6,31 +6,20 @@
 
     <TextView
         android:id="@+id/titleTV"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:gravity="center"
+        style="@style/customView"
         android:textSize="10sp" />
 
     <TextView
         android:id="@+id/authorTV"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:gravity="center"
+        style="@style/customView"
         android:textSize="10sp" />
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="1"
-        android:gravity="center">
+        style="@style/customView">
 
         <TextView
             android:id="@+id/descriptionTV"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="center"
+            style="@style/customView"
             android:textSize="10sp" />
 
     </android.support.v4.widget.NestedScrollView>

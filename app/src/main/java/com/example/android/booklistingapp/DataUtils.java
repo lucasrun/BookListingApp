@@ -113,7 +113,7 @@ public final class DataUtils {
             JSONObject books = new JSONObject(dataJSON);
             JSONArray items = books.getJSONArray("items");
 
-            for(int i = 0; i < items.length(); i++) {
+            for (int i = 0; i < items.length(); i++) {
 
                 String title = "";
                 String authors = "";

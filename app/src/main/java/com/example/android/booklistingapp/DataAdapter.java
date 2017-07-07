@@ -13,7 +13,7 @@ import java.util.List;
  * Created by mhesah on 2017-07-06. DATA OBJECT ADAPTER
  */
 
-public class DataAdapter extends ArrayAdapter<Data>{
+public class DataAdapter extends ArrayAdapter<Data> {
 
     public DataAdapter(Context context, List<Data> data) {
         super(context, 0, data);
