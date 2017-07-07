@@ -25,13 +25,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     // loader id
     private static final int DATA_LOADER_ID = 1;
-
+    // connection vars
+    ConnectivityManager connectManager;
+    NetworkInfo networkInfo;
+    LoaderManager loaderManager;
     // query keyword
     private String mKeyword = "";
-
     // list adapter
     private DataAdapter mAdapter;
-
     // different views
     private TextView mEmptyStateTextView;
     private EditText mEditText;
@@ -56,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
+                connectManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                networkInfo = connectManager.getActiveNetworkInfo();
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
+                }
             }
         });
 
@@ -70,13 +75,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        ConnectivityManager connectManager = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = connectManager.getActiveNetworkInfo();
-
+        connectManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        networkInfo = connectManager.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            LoaderManager loaderManager = getLoaderManager();
+            loaderManager = getLoaderManager();
             loaderManager.initLoader(DATA_LOADER_ID, null, this);
         } else {
             View loadingIndicator = findViewById(R.id.loading_indicator);
@@ -111,6 +113,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<List<Data>> loader) {
         mAdapter.clear();
-        getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
     }
 }
