@@ -27,6 +27,7 @@ public class DataLoader extends AsyncTaskLoader<List<Data>> {
         forceLoad();
     }
 
+    // background thread
     @Override
     public List<Data> loadInBackground() {
         if (mKeyword == null) {

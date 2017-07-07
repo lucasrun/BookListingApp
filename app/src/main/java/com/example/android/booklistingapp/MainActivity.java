@@ -38,11 +38,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private Button mButton;
     private ListView mListView;
 
-    // for list position save state
-    private int index, top;
-    private View v;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,35 +86,77 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    // saving data @ rotation
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        // counting list position
-        index = mListView.getFirstVisiblePosition();
-        v = mListView.getChildAt(0);
-        top = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
+    /***************************** TESTING ENVIROMENT *********************************/
 
-        // saving
-        outState.putString("KEYWORD", mKeyword);
-        outState.putInt("INDEX", index);
-        outState.putInt("TOP", top);
-        super.onSaveInstanceState(outState);
-    }
+//    Parcelable state;
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        state = mListView.onSaveInstanceState();
+//        if (state != null) {
+//            //set adapter to listview
+//            mListView.setAdapter(mAdapter);
+//        }
+//        //Restore previous state
+//        mListView.onRestoreInstanceState(state);
+//    }
+//
+//    // for list position save state
+//    private int index, top;
+//    private View v;
+//
+//    @Override
+//    public void onPause() {
+//        state = mListView.onSaveInstanceState();
+//        super.onPause();
+//    }
+//
+//    @Override
+//    public void onViewCreated(final View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        mListView.setAdapter(mAdapter);
+//
+//        if(state != null) {
+//            mListView.onRestoreInstanceState(state);
+//        }
+//    }
+//
+//    // saving data @ rotation
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        // counting list position
+//        index = mListView.getFirstVisiblePosition();
+//        v = mListView.getChildAt(0);
+//        top = (v == null) ? 0 : (v.getTop() - mListView.getPaddingTop());
+//
+//        // saving
+//        outState.putString("KEYWORD", mKeyword);
+//        outState.putInt("INDEX", index);
+//        outState.putInt("TOP", top);
+//        super.onSaveInstanceState(outState);
+//    }
+//
+//    // loading data @ rotation
+//    @Override
+//    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+//        mKeyword = savedInstanceState.getString("KEYWORD");
+//        index = savedInstanceState.getInt("INDEX");
+//        top = savedInstanceState.getInt("TOP");
+//        super.onRestoreInstanceState(savedInstanceState);
+//        getLoaderManager().restartLoader(0, null, MainActivity.this);
+//        mListView.setSelectionFromTop(index, top);
+//    }
 
-    // loading data @ rotation
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        mKeyword = savedInstanceState.getString("KEYWORD");
-        index = savedInstanceState.getInt("INDEX");
-        top = savedInstanceState.getInt("TOP");
         super.onRestoreInstanceState(savedInstanceState);
         getLoaderManager().restartLoader(0, null, MainActivity.this);
-        mListView.setSelectionFromTop(index, top);
     }
 
-    /*
-    /       LOADER INSTANCES
-    */
+    /***************************** TESTING ENVIROMENT *********************************/
+
+    // loaders
     @Override
     public Loader<List<Data>> onCreateLoader(int i, Bundle bundle) {
         mKeyword = mEditText.getText().toString();
@@ -132,9 +169,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
 
+        // clearing adapter
         mEmptyStateTextView.setText(R.string.no_books);
         mAdapter.clear();
 
+        // filling adapter
         if (data != null && !data.isEmpty()) {
             mAdapter.addAll(data);
         }
@@ -143,5 +182,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<List<Data>> loader) {
         mAdapter.clear();
+        getLoaderManager().restartLoader(0, null, MainActivity.this);
     }
 }
