@@ -61,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 networkInfo = connectManager.getActiveNetworkInfo();
                 if (networkInfo != null && networkInfo.isConnected()) {
                     getLoaderManager().restartLoader(DATA_LOADER_ID, null, MainActivity.this);
+                } else {
+                    mAdapter.clear();
+                    View loadingIndicator = findViewById(R.id.loading_indicator);
+                    loadingIndicator.setVisibility(View.GONE);
+                    mEmptyStateTextView.setText(R.string.no_internet_connection);
                 }
             }
         });
